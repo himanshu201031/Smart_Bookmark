@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import { Sparkles } from 'lucide-react'
 import IntroAnimation from '@/components/ui/scroll-morph-hero'
 import { GetStartedButton } from '@/components/ui/get-started-button'
+import Preloader from '@/components/ui/Preloader'
 
 export default function Home() {
   const router = useRouter()
@@ -36,16 +37,7 @@ export default function Home() {
   }
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-        >
-          <Sparkles className="h-8 w-8 text-indigo-600" />
-        </motion.div>
-      </div>
-    )
+    return <Preloader />
   }
 
   return (

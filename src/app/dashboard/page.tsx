@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 import { LogOut, Bookmark as BookmarkIcon, Loader2, User, Search, Plus, Filter, Star, LayoutGrid, List as ListIcon, Trash2, ExternalLink, Hash } from 'lucide-react'
 import BookmarkForm from '@/components/BookmarkForm'
 import BookmarkList from '@/components/BookmarkList'
+import Preloader from '@/components/ui/Preloader'
 
 export default function Dashboard() {
     const router = useRouter()
@@ -130,16 +131,7 @@ export default function Dashboard() {
     const categories = ['All', ...Array.from(new Set(bookmarks.map(b => b.category)))]
 
     if (loading) {
-        return (
-            <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                >
-                    <Loader2 className="h-8 w-8 text-indigo-600" />
-                </motion.div>
-            </div>
-        )
+        return <Preloader />
     }
 
     return (
