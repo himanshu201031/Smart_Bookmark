@@ -69,8 +69,9 @@ export default function BookmarkForm() {
             }
 
             const favicon_url = getFaviconUrl(url)
+            console.log('Inserting bookmark...', { title, url, category })
 
-            const { error: insertError } = await supabase.from('bookmarks').insert([
+            const { data, error: insertError } = await supabase.from('bookmarks').insert([
                 {
                     user_id: user.id,
                     title: title.trim(),
@@ -80,9 +81,14 @@ export default function BookmarkForm() {
                     is_favorite: isFavorite,
                     favicon_url
                 },
-            ])
+            ]).select()
 
-            if (insertError) throw insertError
+            if (insertError) {
+                console.error('Insert error:', insertError)
+                throw insertError
+            }
+
+            console.log('Insert successful:', data)
 
             // Clear form
             setTitle('')

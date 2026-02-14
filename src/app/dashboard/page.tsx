@@ -36,10 +36,16 @@ export default function Dashboard() {
         }
 
         checkAuth()
+    }, [router])
+
+    useEffect(() => {
+        if (!userEmail) return
+
+        console.log('Setting up realtime subscription for:', userEmail)
 
         // Set up realtime subscription
         const channel = supabase
-            .channel('bookmarks-changes')
+            .channel('bookmarks-realtime')
             .on(
                 'postgres_changes',
                 {
@@ -48,29 +54,37 @@ export default function Dashboard() {
                     table: 'bookmarks',
                 },
                 (payload) => {
-                    console.log('Realtime update:', payload)
+                    console.log('Realtime event received:', payload.eventType, payload)
 
                     if (payload.eventType === 'INSERT') {
-                        setBookmarks((current) => [payload.new as Bookmark, ...current])
+                        const newBookmark = payload.new as Bookmark
+                        setBookmarks((current) => {
+                            if (current.some(b => b.id === newBookmark.id)) return current
+                            return [newBookmark, ...current]
+                        })
                     } else if (payload.eventType === 'DELETE') {
                         setBookmarks((current) =>
                             current.filter((bookmark) => bookmark.id !== payload.old.id)
                         )
                     } else if (payload.eventType === 'UPDATE') {
+                        const updatedBookmark = payload.new as Bookmark
                         setBookmarks((current) =>
                             current.map((bookmark) =>
-                                bookmark.id === payload.new.id ? payload.new as Bookmark : bookmark
+                                bookmark.id === updatedBookmark.id ? updatedBookmark : bookmark
                             )
                         )
                     }
                 }
             )
-            .subscribe()
+            .subscribe((status) => {
+                console.log('Realtime subscription status:', status)
+            })
 
         return () => {
+            console.log('Cleaning up realtime subscription')
             supabase.removeChannel(channel)
         }
-    }, [router])
+    }, [userEmail])
 
     const fetchBookmarks = async () => {
         try {
