@@ -78,6 +78,24 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to see the app in action.
 
+## 🧠 Challenges Faced & Solutions
+
+### 🎨 1. Maintaining UI Integrity During Theme Shifts
+**Problem:** The project underwent several major theme changes—from vibrant gradients to strict minimalist B&W, and finally to a premium monochrome glassmorphic design. Each shift risked breaking components or making them look inconsistent.
+**Solution:** I established a modular UI component structure. By keeping the logic (Supabase hooks) separate from the styling (Tailwind + Framer Motion), I was able to overhaul the entire design language in minutes without breaking core bookmarking functionality.
+
+### 🔄 2. Real-time Sync & Data Consistency
+**Problem:** Users noticed that newly saved bookmarks didn't appear instantly; a browser refresh was required despite having Realtime enabled.
+**Solution:** I identified three bottlenecks: 
+1. The Realtime subscription was firing before the user's Auth session was ready.
+2. The Database was missing an `UPDATE` policy.
+3. The table used `DEFAULT` replication, which sent incomplete payloads.
+I solved this by syncing the subscription hook to the auth state, adding the missing RLS policies, and setting `REPLICA IDENTITY FULL` on the bookmarks table to ensure complete data delivery.
+
+### 📱 3. Premium Glassmorphic Performance
+**Problem:** Adding heavy `backdrop-blur` and many moving background elements can sometimes impact performance on lower-end devices.
+**Solution:** I used `framer-motion`'s optimized animation engine and carefully limited the number of simultaneous blur layers. The background orbs use subtle opacity shifts rather than complex SVG filters to maintain a smooth 60fps experience while keeping the high-end aesthetic.
+
 ## 🎨 Design Philosophy
 
 The app follows a **Monochromatic Premium** design language. It focuses on:
