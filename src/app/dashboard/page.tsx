@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { supabase, Bookmark } from '@/lib/supabase'
 import { motion } from 'framer-motion'
 import { LogOut, Bookmark as BookmarkIcon, Loader2, User, Search, Plus, Filter, Star, LayoutGrid, List as ListIcon, Trash2, ExternalLink, Hash } from 'lucide-react'
