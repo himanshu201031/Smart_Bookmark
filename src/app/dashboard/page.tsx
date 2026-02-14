@@ -128,11 +128,11 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-            {/* Animated background elements */}
+        <div className="relative min-h-screen overflow-hidden bg-white">
+            {/* Subtle animated background elements */}
             <div className="absolute inset-0 overflow-hidden">
                 <motion.div
-                    className="absolute -left-4 top-1/4 h-72 w-72 rounded-full bg-gradient-to-r from-purple-400/20 to-pink-400/20 blur-3xl"
+                    className="absolute -left-4 top-1/4 h-72 w-72 rounded-full bg-black/5 blur-3xl"
                     animate={{
                         x: [0, 100, 0],
                         y: [0, -50, 0],
@@ -140,7 +140,7 @@ export default function Dashboard() {
                     transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
                 />
                 <motion.div
-                    className="absolute -right-4 top-1/2 h-96 w-96 rounded-full bg-gradient-to-r from-indigo-400/20 to-purple-400/20 blur-3xl"
+                    className="absolute -right-4 top-1/2 h-96 w-96 rounded-full bg-black/5 blur-3xl"
                     animate={{
                         x: [0, -100, 0],
                         y: [0, 50, 0],
@@ -157,34 +157,34 @@ export default function Dashboard() {
                     animate={{ opacity: 1, y: 0 }}
                     className="mb-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between"
                 >
-                    <div className="flex items-center gap-4">
-                        <div className="rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-700 p-4 shadow-xl ring-4 ring-indigo-500/10">
+                    <Link href="/" className="flex items-center gap-4 transition-all hover:opacity-80">
+                        <div className="rounded-2xl bg-black p-4 shadow-xl ring-4 ring-black/5">
                             <BookmarkIcon className="h-8 w-8 text-white" />
                         </div>
                         <div>
-                            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
-                                My Workspace
+                            <h1 className="text-3xl font-extrabold tracking-tight text-black">
+                                Workspace
                             </h1>
                             <div className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                 <User className="h-3.5 w-3.5" />
                                 <span>{userEmail}</span>
                             </div>
                         </div>
-                    </div>
+                    </Link>
 
                     <div className="flex items-center gap-3">
                         <motion.div
-                            className="hidden items-center gap-1 rounded-xl bg-white/50 p-1 backdrop-blur-sm border border-white/20 md:flex"
+                            className="hidden items-center gap-1 rounded-xl bg-black/5 p-1 backdrop-blur-sm border border-black/5 md:flex"
                         >
                             <button
                                 onClick={() => setViewMode('grid')}
-                                className={`rounded-lg p-2 transition-all ${viewMode === 'grid' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-400 hover:text-gray-600'}`}
+                                className={`rounded-lg p-2 transition-all ${viewMode === 'grid' ? 'bg-black text-white' : 'text-gray-400 hover:text-gray-600'}`}
                             >
                                 <LayoutGrid className="h-4 w-4" />
                             </button>
                             <button
                                 onClick={() => setViewMode('list')}
-                                className={`rounded-lg p-2 transition-all ${viewMode === 'list' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-400 hover:text-gray-600'}`}
+                                className={`rounded-lg p-2 transition-all ${viewMode === 'list' ? 'bg-black text-white' : 'text-gray-400 hover:text-gray-600'}`}
                             >
                                 <ListIcon className="h-4 w-4" />
                             </button>
@@ -194,7 +194,7 @@ export default function Dashboard() {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={handleLogout}
-                            className="flex items-center gap-2 rounded-xl bg-white/70 px-5 py-2.5 font-semibold text-gray-700 shadow-xl backdrop-blur-xl border border-white/20 transition-all hover:bg-white/90 hover:text-red-600"
+                            className="flex items-center gap-2 rounded-xl bg-white/70 px-5 py-2.5 font-semibold text-gray-700 shadow-xl backdrop-blur-xl border border-black/5 transition-all hover:bg-black hover:text-white"
                         >
                             <LogOut className="h-4 w-4" />
                             <span>Sign Out</span>
@@ -211,13 +211,13 @@ export default function Dashboard() {
                             animate={{ opacity: 1, x: 0 }}
                             className="grid grid-cols-2 gap-4"
                         >
-                            <div className="rounded-2xl bg-white/70 p-4 shadow-lg backdrop-blur-xl border border-white/20">
+                            <div className="rounded-2xl bg-white/70 p-4 shadow-lg backdrop-blur-xl border border-black/5">
                                 <p className="text-sm font-medium text-gray-500 text-center uppercase tracking-wider">Total</p>
-                                <p className="mt-1 text-3xl font-bold text-indigo-600 text-center">{bookmarks.length}</p>
+                                <p className="mt-1 text-3xl font-bold text-black text-center">{bookmarks.length}</p>
                             </div>
-                            <div className="rounded-2xl bg-white/70 p-4 shadow-lg backdrop-blur-xl border border-white/20">
+                            <div className="rounded-2xl bg-white/70 p-4 shadow-lg backdrop-blur-xl border border-black/5">
                                 <p className="text-sm font-medium text-gray-500 text-center uppercase tracking-wider">Favorites</p>
-                                <p className="mt-1 text-3xl font-bold text-pink-500 text-center">{bookmarks.filter(b => b.is_favorite).length}</p>
+                                <p className="mt-1 text-3xl font-bold text-gray-900 text-center">{bookmarks.filter(b => b.is_favorite).length}</p>
                             </div>
                         </motion.div>
 
@@ -229,13 +229,13 @@ export default function Dashboard() {
                         {/* Actions & Filters */}
                         <div className="space-y-4">
                             <div className="relative group">
-                                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-500 transition-colors" />
+                                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors" />
                                 <input
                                     type="text"
                                     placeholder="Search bookmarks by title, URL or description..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full rounded-2xl border-none bg-white/70 py-4 pl-12 pr-4 text-gray-900 shadow-xl ring-1 ring-white/20 backdrop-blur-xl transition-all focus:bg-white focus:ring-4 focus:ring-indigo-500/20 outline-none"
+                                    className="w-full rounded-2xl border-none bg-white/70 py-4 pl-12 pr-4 text-gray-900 shadow-xl ring-1 ring-black/5 backdrop-blur-xl transition-all focus:bg-white focus:ring-4 focus:ring-black/10 outline-none"
                                 />
                             </div>
 
@@ -245,7 +245,7 @@ export default function Dashboard() {
                                         key={cat}
                                         onClick={() => setSelectedCategory(cat)}
                                         className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-sm ${selectedCategory === cat
-                                            ? 'bg-indigo-600 text-white shadow-indigo-200'
+                                            ? 'bg-black text-white'
                                             : 'bg-white/60 text-gray-600 hover:bg-white'
                                             }`}
                                     >
@@ -256,7 +256,7 @@ export default function Dashboard() {
                                 <button
                                     onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
                                     className={`ml-auto px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-sm flex items-center gap-1.5 ${showFavoritesOnly
-                                        ? 'bg-pink-500 text-white shadow-pink-200'
+                                        ? 'bg-black text-white'
                                         : 'bg-white/60 text-gray-600 hover:bg-white'
                                         }`}
                                 >
@@ -285,7 +285,7 @@ export default function Dashboard() {
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
-                                    className="flex flex-col items-center justify-center rounded-3xl bg-white/30 p-12 text-center backdrop-blur-sm border-2 border-dashed border-gray-300"
+                                    className="flex flex-col items-center justify-center rounded-3xl bg-white/30 p-12 text-center backdrop-blur-sm border-2 border-dashed border-gray-200"
                                 >
                                     <div className="rounded-full bg-white/50 p-4 mb-4">
                                         <Search className="h-8 w-8 text-gray-400" />

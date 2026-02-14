@@ -102,16 +102,16 @@ export default function BookmarkForm() {
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-3xl bg-white/80 p-6 shadow-2xl backdrop-blur-2xl border border-white/40 ring-1 ring-black/5"
+            className="rounded-3xl bg-white/80 p-6 shadow-2xl backdrop-blur-2xl border border-black/5 ring-1 ring-black/5"
         >
             <div className="mb-6 flex items-center justify-between">
                 <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                    <Plus className="h-5 w-5 text-indigo-600" />
+                    <Plus className="h-5 w-5 text-black" />
                     Quick Add
                 </h2>
                 <button
                     onClick={() => setShowAdvanced(!showAdvanced)}
-                    className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors uppercase tracking-wider"
+                    className="text-xs font-semibold text-black hover:opacity-70 transition-colors uppercase tracking-wider"
                 >
                     {showAdvanced ? 'Hide Advanced' : 'Add Details'}
                 </button>
@@ -120,25 +120,25 @@ export default function BookmarkForm() {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-4">
                     <div className="relative group">
-                        <Type className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-indigo-500 transition-colors" />
+                        <Type className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-black transition-colors" />
                         <input
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="Page Title"
-                            className="w-full rounded-2xl border-none bg-gray-50/50 py-3.5 pl-11 pr-4 text-gray-900 placeholder-gray-400 ring-1 ring-gray-200 transition-all focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                            className="w-full rounded-2xl border-none bg-gray-50/50 py-3.5 pl-11 pr-4 text-gray-900 placeholder-gray-400 ring-1 ring-gray-200 transition-all focus:bg-white focus:ring-2 focus:ring-black outline-none"
                             disabled={loading}
                         />
                     </div>
 
                     <div className="relative group">
-                        <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-indigo-500 transition-colors" />
+                        <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-black transition-colors" />
                         <input
                             type="text"
                             value={url}
                             onChange={(e) => setUrl(e.target.value)}
                             placeholder="https://..."
-                            className="w-full rounded-2xl border-none bg-gray-50/50 py-3.5 pl-11 pr-4 text-gray-900 placeholder-gray-400 ring-1 ring-gray-200 transition-all focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                            className="w-full rounded-2xl border-none bg-gray-50/50 py-3.5 pl-11 pr-4 text-gray-900 placeholder-gray-400 ring-1 ring-gray-200 transition-all focus:bg-white focus:ring-2 focus:ring-black outline-none"
                             disabled={loading}
                         />
                     </div>
@@ -156,7 +156,7 @@ export default function BookmarkForm() {
                                     <select
                                         value={category}
                                         onChange={(e) => setCategory(e.target.value)}
-                                        className="w-full rounded-2xl border-none bg-gray-50/50 py-3.5 pl-11 pr-4 text-gray-900 ring-1 ring-gray-200 transition-all focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none appearance-none cursor-pointer"
+                                        className="w-full rounded-2xl border-none bg-gray-50/50 py-3.5 pl-11 pr-4 text-gray-900 ring-1 ring-gray-200 transition-all focus:bg-white focus:ring-2 focus:ring-black outline-none appearance-none cursor-pointer"
                                     >
                                         {CATEGORIES.map(cat => (
                                             <option key={cat} value={cat}>{cat}</option>
@@ -171,7 +171,7 @@ export default function BookmarkForm() {
                                         onChange={(e) => setDescription(e.target.value)}
                                         placeholder="Add a short description..."
                                         rows={2}
-                                        className="w-full rounded-2xl border-none bg-gray-50/50 py-3.5 pl-11 pr-4 text-gray-900 placeholder-gray-400 ring-1 ring-gray-200 transition-all focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
+                                        className="w-full rounded-2xl border-none bg-gray-50/50 py-3.5 pl-11 pr-4 text-gray-900 placeholder-gray-400 ring-1 ring-gray-200 transition-all focus:bg-white focus:ring-2 focus:ring-black outline-none resize-none"
                                     />
                                 </div>
 
@@ -180,11 +180,11 @@ export default function BookmarkForm() {
                                         type="button"
                                         onClick={() => setIsFavorite(!isFavorite)}
                                         className={`flex-1 flex items-center justify-center gap-2 rounded-xl py-2 text-sm font-semibold transition-all ${isFavorite
-                                                ? 'bg-pink-50 text-pink-600 ring-1 ring-pink-200'
-                                                : 'bg-gray-50 text-gray-500'
+                                            ? 'bg-black text-white'
+                                            : 'bg-gray-50 text-gray-500 hover:bg-gray-100'
                                             }`}
                                     >
-                                        <Star className={`h-4 w-4 ${isFavorite ? 'fill-pink-600 text-pink-600' : ''}`} />
+                                        <Star className={`h-4 w-4 ${isFavorite ? 'fill-white' : ''}`} />
                                         Mark as Favorite
                                     </button>
                                 </div>
@@ -197,7 +197,7 @@ export default function BookmarkForm() {
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="rounded-xl bg-red-50 p-3 text-sm text-red-600 border border-red-100"
+                        className="rounded-xl bg-gray-50 p-3 text-sm text-black border border-gray-100"
                     >
                         {error}
                     </motion.div>
@@ -208,12 +208,12 @@ export default function BookmarkForm() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={loading}
-                    className="flex w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 py-4 font-bold text-white shadow-xl shadow-indigo-200 transition-all hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex w-full items-center justify-center gap-2 rounded-2xl bg-black px-6 py-4 font-bold text-white shadow-xl shadow-black/10 transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     {loading ? (
                         <>
                             <Loader2 className="h-5 w-5 animate-spin" />
-                            <span>Creating Bookmark...</span>
+                            <span>Saving...</span>
                         </>
                     ) : (
                         <>

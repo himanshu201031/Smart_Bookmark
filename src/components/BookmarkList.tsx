@@ -63,7 +63,7 @@ export default function BookmarkList({ bookmarks, viewMode = 'grid' }: BookmarkL
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9 }}
                         transition={{ duration: 0.3, delay: index * 0.05 }}
-                        className={`group relative overflow-hidden rounded-2xl bg-white/80 border border-white/40 shadow-xl transition-all hover:shadow-2xl hover:-translate-y-1 ${viewMode === 'list' ? 'flex items-center gap-4 p-4' : 'flex flex-col p-6'
+                        className={`group relative overflow-hidden rounded-2xl bg-white/80 border border-black/5 shadow-xl transition-all hover:shadow-2xl hover:-translate-y-1 ${viewMode === 'list' ? 'flex items-center gap-4 p-4' : 'flex flex-col p-6'
                             }`}
                     >
                         {/* Favorite Button Overlay */}
@@ -71,28 +71,28 @@ export default function BookmarkList({ bookmarks, viewMode = 'grid' }: BookmarkL
                             onClick={() => toggleFavorite(bookmark)}
                             disabled={togglingFavId === bookmark.id}
                             className={`absolute top-4 right-4 z-10 rounded-full p-2 transition-all ${bookmark.is_favorite
-                                    ? 'bg-pink-50 text-pink-500 opacity-100'
-                                    : 'bg-white/50 text-gray-400 opacity-0 group-hover:opacity-100 hover:text-pink-500'
+                                    ? 'bg-black text-white opacity-100'
+                                    : 'bg-white/50 text-gray-400 opacity-0 group-hover:opacity-100 hover:text-black'
                                 }`}
                         >
                             {togglingFavId === bookmark.id ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
                             ) : (
-                                <Star className={`h-4 w-4 ${bookmark.is_favorite ? 'fill-pink-500' : ''}`} />
+                                <Star className={`h-4 w-4 ${bookmark.is_favorite ? 'fill-white' : ''}`} />
                             )}
                         </button>
 
                         {/* Icon/Favicon Area */}
-                        <div className={`relative flex-shrink-0 ${viewMode === 'list' ? 'h-12 w-12' : 'mb-5 h-14 w-14'}`}>
-                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 opacity-10" />
+                        <div className={`relative flex-shrink-0 grayscale ${viewMode === 'list' ? 'h-12 w-12' : 'mb-5 h-14 w-14'}`}>
+                            <div className="absolute inset-0 rounded-2xl bg-black/5" />
                             <div className="flex h-full w-full items-center justify-center rounded-2xl ring-1 ring-black/5 overflow-hidden">
                                 {bookmark.favicon_url ? (
-                                    <img src={bookmark.favicon_url} alt="" className="h-8 w-8 object-contain" onError={(e) => {
+                                    <img src={bookmark.favicon_url} alt="" className="h-8 w-8 object-contain opacity-50 group-hover:opacity-100 transition-opacity" onError={(e) => {
                                         e.currentTarget.style.display = 'none'
                                         e.currentTarget.nextElementSibling?.classList.remove('hidden')
                                     }} />
                                 ) : null}
-                                <Globe className={`h-8 w-8 text-indigo-600 ${bookmark.favicon_url ? 'hidden' : ''}`} />
+                                <Globe className={`h-8 w-8 text-black ${bookmark.favicon_url ? 'hidden' : ''}`} />
                             </div>
                         </div>
 
@@ -100,7 +100,7 @@ export default function BookmarkList({ bookmarks, viewMode = 'grid' }: BookmarkL
                         <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2 mb-1">
                                 {bookmark.category && (
-                                    <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-indigo-600 ring-1 ring-indigo-200">
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-black/5 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-black ring-1 ring-black/10">
                                         <Hash className="h-2.5 w-2.5" />
                                         {bookmark.category}
                                     </span>
@@ -111,7 +111,7 @@ export default function BookmarkList({ bookmarks, viewMode = 'grid' }: BookmarkL
                                 </span>
                             </div>
 
-                            <h3 className="truncate text-lg font-bold text-gray-900 mb-1 group-hover:text-indigo-600 transition-colors">
+                            <h3 className="truncate text-lg font-bold text-gray-900 mb-1 group-hover:text-black transition-colors">
                                 {bookmark.title}
                             </h3>
 
@@ -126,7 +126,7 @@ export default function BookmarkList({ bookmarks, viewMode = 'grid' }: BookmarkL
                                     href={bookmark.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 rounded-lg bg-indigo-50 px-3 py-1.5 text-xs font-bold text-indigo-700 transition-all hover:bg-indigo-100 hover:gap-2"
+                                    className="flex items-center gap-1.5 rounded-lg bg-black/5 px-3 py-1.5 text-xs font-bold text-black transition-all hover:bg-black hover:text-white hover:gap-2"
                                 >
                                     Visit
                                     <ExternalLink className="h-3 w-3" />
@@ -135,7 +135,7 @@ export default function BookmarkList({ bookmarks, viewMode = 'grid' }: BookmarkL
                                 <button
                                     onClick={() => handleDelete(bookmark.id)}
                                     disabled={deletingId === bookmark.id}
-                                    className="ml-auto rounded-lg p-1.5 text-gray-400 opacity-0 transition-all hover:bg-red-50 hover:text-red-600 group-hover:opacity-100"
+                                    className="ml-auto rounded-lg p-1.5 text-gray-400 opacity-0 transition-all hover:bg-black/5 hover:text-black group-hover:opacity-100"
                                 >
                                     {deletingId === bookmark.id ? (
                                         <Loader2 className="h-4 w-4 animate-spin" />
