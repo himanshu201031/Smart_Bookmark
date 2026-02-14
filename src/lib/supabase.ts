@@ -10,5 +10,9 @@ export type Bookmark = {
     user_id: string
     title: string
     url: string
+    category: string
+    description?: string
+    is_favorite: boolean
+    favicon_url?: string
     created_at: string
 }

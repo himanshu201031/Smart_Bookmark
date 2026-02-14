@@ -2,14 +2,20 @@
 
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { motion } from 'framer-motion'
-import { Plus, Loader2 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Plus, Loader2, Link as LinkIcon, Type, FileText, Folder, Star, Globe } from 'lucide-react'
+
+const CATEGORIES = ['Reading', 'Work', 'Personal', 'Shopping', 'Tech', 'Finance', 'Entertainment', 'Others']
 
 export default function BookmarkForm() {
     const [title, setTitle] = useState('')
     const [url, setUrl] = useState('')
+    const [category, setCategory] = useState('Reading')
+    const [description, setDescription] = useState('')
+    const [isFavorite, setIsFavorite] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const [showAdvanced, setShowAdvanced] = useState(false)
 
     const validateUrl = (urlString: string) => {
         try {
@@ -17,6 +23,15 @@ export default function BookmarkForm() {
             return true
         } catch {
             return false
+        }
+    }
+
+    const getFaviconUrl = (urlString: string) => {
+        try {
+            const domain = new URL(urlString).hostname
+            return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`
+        } catch {
+            return ''
         }
     }
 
@@ -53,11 +68,17 @@ export default function BookmarkForm() {
                 return
             }
 
+            const favicon_url = getFaviconUrl(url)
+
             const { error: insertError } = await supabase.from('bookmarks').insert([
                 {
                     user_id: user.id,
                     title: title.trim(),
                     url: url.trim(),
+                    category,
+                    description: description.trim(),
+                    is_favorite: isFavorite,
+                    favicon_url
                 },
             ])
 
@@ -66,6 +87,9 @@ export default function BookmarkForm() {
             // Clear form
             setTitle('')
             setUrl('')
+            setDescription('')
+            setIsFavorite(false)
+            setShowAdvanced(false)
         } catch (err) {
             console.error('Error adding bookmark:', err)
             setError('Failed to add bookmark. Please try again.')
@@ -78,55 +102,102 @@ export default function BookmarkForm() {
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="rounded-2xl bg-white/70 p-6 shadow-xl backdrop-blur-xl border border-white/20"
+            className="rounded-3xl bg-white/80 p-6 shadow-2xl backdrop-blur-2xl border border-white/40 ring-1 ring-black/5"
         >
-            <h2 className="mb-4 text-xl font-semibold text-gray-800">
-                Add New Bookmark
-            </h2>
+            <div className="mb-6 flex items-center justify-between">
+                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <Plus className="h-5 w-5 text-indigo-600" />
+                    Quick Add
+                </h2>
+                <button
+                    onClick={() => setShowAdvanced(!showAdvanced)}
+                    className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors uppercase tracking-wider"
+                >
+                    {showAdvanced ? 'Hide Advanced' : 'Add Details'}
+                </button>
+            </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <label
-                        htmlFor="title"
-                        className="mb-2 block text-sm font-medium text-gray-700"
-                    >
-                        Title
-                    </label>
-                    <input
-                        type="text"
-                        id="title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="My Awesome Website"
-                        className="w-full rounded-xl border border-gray-200 bg-white/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-                        disabled={loading}
-                    />
-                </div>
+                <div className="space-y-4">
+                    <div className="relative group">
+                        <Type className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-indigo-500 transition-colors" />
+                        <input
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="Page Title"
+                            className="w-full rounded-2xl border-none bg-gray-50/50 py-3.5 pl-11 pr-4 text-gray-900 placeholder-gray-400 ring-1 ring-gray-200 transition-all focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                            disabled={loading}
+                        />
+                    </div>
 
-                <div>
-                    <label
-                        htmlFor="url"
-                        className="mb-2 block text-sm font-medium text-gray-700"
-                    >
-                        URL
-                    </label>
-                    <input
-                        type="text"
-                        id="url"
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                        placeholder="https://example.com"
-                        className="w-full rounded-xl border border-gray-200 bg-white/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-                        disabled={loading}
-                    />
+                    <div className="relative group">
+                        <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-indigo-500 transition-colors" />
+                        <input
+                            type="text"
+                            value={url}
+                            onChange={(e) => setUrl(e.target.value)}
+                            placeholder="https://..."
+                            className="w-full rounded-2xl border-none bg-gray-50/50 py-3.5 pl-11 pr-4 text-gray-900 placeholder-gray-400 ring-1 ring-gray-200 transition-all focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                            disabled={loading}
+                        />
+                    </div>
+
+                    <AnimatePresence>
+                        {showAdvanced && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="space-y-4 overflow-hidden pt-2"
+                            >
+                                <div className="relative group">
+                                    <Folder className="absolute left-4 top-3.5 h-4 w-4 text-gray-400" />
+                                    <select
+                                        value={category}
+                                        onChange={(e) => setCategory(e.target.value)}
+                                        className="w-full rounded-2xl border-none bg-gray-50/50 py-3.5 pl-11 pr-4 text-gray-900 ring-1 ring-gray-200 transition-all focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none appearance-none cursor-pointer"
+                                    >
+                                        {CATEGORIES.map(cat => (
+                                            <option key={cat} value={cat}>{cat}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="relative group">
+                                    <FileText className="absolute left-4 top-3.5 h-4 w-4 text-gray-400" />
+                                    <textarea
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        placeholder="Add a short description..."
+                                        rows={2}
+                                        className="w-full rounded-2xl border-none bg-gray-50/50 py-3.5 pl-11 pr-4 text-gray-900 placeholder-gray-400 ring-1 ring-gray-200 transition-all focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
+                                    />
+                                </div>
+
+                                <div className="flex items-center gap-3 px-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsFavorite(!isFavorite)}
+                                        className={`flex-1 flex items-center justify-center gap-2 rounded-xl py-2 text-sm font-semibold transition-all ${isFavorite
+                                                ? 'bg-pink-50 text-pink-600 ring-1 ring-pink-200'
+                                                : 'bg-gray-50 text-gray-500'
+                                            }`}
+                                    >
+                                        <Star className={`h-4 w-4 ${isFavorite ? 'fill-pink-600 text-pink-600' : ''}`} />
+                                        Mark as Favorite
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
 
                 {error && (
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="rounded-lg bg-red-50 p-3 text-sm text-red-600"
+                        className="rounded-xl bg-red-50 p-3 text-sm text-red-600 border border-red-100"
                     >
                         {error}
                     </motion.div>
@@ -137,17 +208,17 @@ export default function BookmarkForm() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={loading}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 font-semibold text-white shadow-lg transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 py-4 font-bold text-white shadow-xl shadow-indigo-200 transition-all hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     {loading ? (
                         <>
                             <Loader2 className="h-5 w-5 animate-spin" />
-                            <span>Adding...</span>
+                            <span>Creating Bookmark...</span>
                         </>
                     ) : (
                         <>
                             <Plus className="h-5 w-5" />
-                            <span>Add Bookmark</span>
+                            <span>Save Bookmark</span>
                         </>
                     )}
                 </motion.button>
